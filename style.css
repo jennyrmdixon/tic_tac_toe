@@ -64,38 +64,28 @@ select {
 
 /*End Reset Code*/
 
-
-.annoucements h4, .trending h4 {
-    padding-bottom: 15px;
+* {
+    font-family: sans-serif;
 }
 
-.annoucements_card, .trending_card {
-    background-color: white;
-    padding: 0 20px 20px 20px;
-    border-radius: 5px;
-    display: grid;
-    box-shadow: 5px 5px 5px rgba(121, 122, 126, 0.411);
+#gameBoardWrapper {
+    display: grid; 
+    gap: 0;
+    max-width: 800px;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin:auto;
 }
 
-.annoucements_card h4 {
-    padding-top: 15px;
+.gridCell {
+    border: 1px solid black;
+    min-width: 300px;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.trending {
-    align-self: end;
-}
-
-.trending_item {
-    display: grid;
-    grid-template-columns: 45px 150px;
-    gap: 5px;
-    padding: 15px 0;
-}
-
-.footer {
-    margin-top: 15px;
-}
-
-.footer a {
-    color: grey;
+.gridCell p {
+    font-size: 3em;
+    font-weight: bold;
 }
