@@ -1,44 +1,56 @@
 // Module to create gameboard (array)
-  // const gameBoard = (() => {
-  //   const grid = [];
-  //   let gameBoardWrapper = document.getElementById("gameBoardWrapper");
-  //   for (let i = 0; i < 6; i++) {
-  //       let div = gameBoardWrapper.appendChild(document.createElement('div'));
-  //       div.classList.add('gridCell');
-
-  //       grid.push(div);        
-  //   };
-  //   return {
-  //   grid
-  //   };
-  // })();
-
-  //Option A - HTML rendered by javascript
-  //Add p class to each rendered grid item
-  //Add text "X" or "O" to p class
-  //grid = each HTML itme
-
-  //var elements = document.getElementById('myDiv').children
-  // elements.item(n)
-
-// Module to create gameboard (array)
-//
 
 const gameBoard = (() => {
-  const grid = ["X", "O", "X", "O", "X", "O"];
+  let grid = ["", "", "", "", "", "O", "", "", ""];
   let gridCells = document.getElementById('gameBoardWrapper').children;
-  for (let i = 0; i < 6; i++) {
-    let cellContent = gridCells.item(i).appendChild(document.createElement('p'));
+  const updateGrid  = (() => {
+  for (let i = 0; i < 9; i++) {
+    let cellContent = gridCells.item(i);
+    cellContent.setAttribute('id',i);
     cellContent.textContent = grid[i];
-
   }
+})
+  return {grid, gridCells, updateGrid}
 }) ();
+//Maybe can be removed later
+gameBoard.updateGrid();
 
+//Factory function to create player
 
-//Factory fun)ction to create player
+const player = (name, marker) => { 
+  const takeTurn  = (() => {
+  // let thisPlayer = gameController.currentPlayer;
+    document.getElementById('gameBoardWrapper').addEventListener("click", function (e) {
+    if (e.target.classList.contains("gridCell") && (!e.target.innerHTML) ) {
+      const clickedElement = e.target; 
+      const id = clickedElement.id;
+      // console.log(thisPlayer.marker);
+      // console.log = marker;
+      gameBoard.grid[id] = marker;
+      gameBoard.updateGrid();
+      gameController.switchPlayer();
+      // gameController.nextTurn();
+    }   
+  });
+});
 
+  return {name, marker, takeTurn};
+}
 
-//Player name(
-//Player actions (X, O, choose location)
+let playerOne = player("Player One", "X");
+let playerTwo = player("Player Two", "O");
 
-//Module to control display
+// displayController
+const gameController  = (() => { 
+  let currentPlayer = playerOne;
+  const switchPlayer = () => {
+  currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+  currentPlayer.takeTurn();
+}
+const startGame = () => {
+  playerOne.takeTurn();
+}
+   return {switchPlayer, startGame, currentPlayer};
+})();
+
+gameController.startGame();

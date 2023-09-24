@@ -68,6 +68,10 @@ select {
     font-family: sans-serif;
 }
 
+h1 {
+    margin: auto;
+}
+
 #gameBoardWrapper {
     display: grid; 
     gap: 0;
@@ -85,7 +89,7 @@ select {
     justify-content: center;
 }
 
-.gridCell p {
+.gridCell {
     font-size: 3em;
     font-weight: bold;
 }
