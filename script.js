@@ -12,29 +12,21 @@ const gameBoard = (() => {
 })
   return {grid, gridCells, updateGrid}
 }) ();
-//Maybe can be removed later
-gameBoard.updateGrid();
 
 //Factory function to create player
 
-const player = (name, marker) => { 
-  const takeTurn  = (() => {
-  // let thisPlayer = gameController.currentPlayer;
-    document.getElementById('gameBoardWrapper').addEventListener("click", function (e) {
-    if (e.target.classList.contains("gridCell") && (!e.target.innerHTML) ) {
-      const clickedElement = e.target; 
-      const id = clickedElement.id;
-      // console.log(thisPlayer.marker);
-      // console.log = marker;
+
+const player = (name, marker) => {
+  const takeTurn = (id) => {
+
+    if (gameBoard.grid[id] === "") {
       gameBoard.grid[id] = marker;
       gameBoard.updateGrid();
       gameController.switchPlayer();
-      // gameController.nextTurn();
-    }   
-  });
-});
+    }
+  };
 
-  return {name, marker, takeTurn};
+  return { name, marker, takeTurn };
 }
 
 let playerOne = player("Player One", "X");
@@ -45,12 +37,16 @@ const gameController  = (() => {
   let currentPlayer = playerOne;
   const switchPlayer = () => {
   currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-  currentPlayer.takeTurn();
 }
-const startGame = () => {
-  playerOne.takeTurn();
-}
-   return {switchPlayer, startGame, currentPlayer};
+const runGame = () => {
+  gameBoard.updateGrid();
+
+  for (let i = 0; i < 9; i++) {
+    gameBoard.gridCells[i].addEventListener("click", function () {
+      currentPlayer.takeTurn(i);
+    });
+  }}
+   return {switchPlayer, runGame, currentPlayer};
 })();
 
-gameController.startGame();
+gameController.runGame();
