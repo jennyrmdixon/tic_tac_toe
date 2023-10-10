@@ -18,10 +18,6 @@ const player = (name, marker) => {
 
     if (gameBoard.grid[gridCell] === "") {
       gameBoard.grid[gridCell] = marker;
-      gameBoard.updateGrid();
-      gameController.checkForWin(playerOne);
-      gameController.checkForWin(playerTwo);
-      gameController.switchPlayer();
     }
   };
 
@@ -43,11 +39,8 @@ const getAllIndexes = (arr, mark) => {
 }
 
 const checkForWin = (player) => {
-  console.log("Win check" + player.marker);
   let markerMap = getAllIndexes(gameBoard.grid, player.marker);
   let checker = (arr, target) => target.every(v => arr.includes(v));
-
-  console.log(markerMap);
 
   if (
     checker(markerMap, [0,1,2]) ||
@@ -59,7 +52,10 @@ const checkForWin = (player) => {
     checker(markerMap, [0,4,8]) ||
     checker(markerMap, [2,4,6]) 
   ) {
-    alert(player.name + " wins!");
+    let statusHeading = document.getElementById('gameStatus');
+    statusHeading.textContent = player.name + " wins!";
+    statusHeading.classList.add('win');  
+    return true;                                    
   }
 
 }
@@ -67,17 +63,25 @@ const checkForWin = (player) => {
 const runGame = () => {
   gameBoard.updateGrid();
 
-   for (let i = 0; i < 9; i++) {
-    gameBoard.gridCells[i].addEventListener("click", function () {
-      ///Move this to before click
-      // checkForWin(playerOne);
-      // checkForWin(playerTwo);
-      currentPlayer.takeTurn(i);
 
-     });
+  for (let i = 0; i < 9; i++) {
+    gameBoard.gridCells[i].addEventListener("click", runTurn);
+  }
+
+  function runTurn() {
+    currentPlayer.takeTurn(this.id);
+    gameBoard.updateGrid();
+    
+    if (checkForWin(playerOne) || checkForWin(playerTwo)) {
+      for (let i = 0; i < 9; i++) {
+        gameBoard.gridCells[i].removeEventListener("click", runTurn);
+      }
+    }
+    switchPlayer();
   }
 }
-   return {switchPlayer, runGame, checkForWin, currentPlayer};
+
+return {switchPlayer, runGame, checkForWin, currentPlayer};
 })();
 
 gameController.runGame();

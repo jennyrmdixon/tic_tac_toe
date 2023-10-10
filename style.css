@@ -72,6 +72,11 @@ h1 {
     margin: auto;
 }
 
+h2.win {
+    color:green;
+    font-weight: bold;
+}
+
 #gameBoardWrapper {
     display: grid; 
     gap: 0;
@@ -93,3 +98,4 @@ h1 {
     font-size: 3em;
     font-weight: bold;
 }
+
