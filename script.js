@@ -1,16 +1,30 @@
-// Module to create gameboard (array)
+
 const gameBoard = (() => {
   let grid = ["", "", "", "", "", "", "", "", ""];
   let gridCells = document.getElementById('gameBoardWrapper').children;
-  const updateGrid  = (() => {
-  for (let i = 0; i < 9; i++) {
-    let cellContent = gridCells.item(i);
-    cellContent.setAttribute('id',i);
-    cellContent.textContent = grid[i];
+
+  const updateGrid = () => {
+    for (let i = 0; i < 9; i++) {
+      let cellContent = gridCells.item(i);
+      cellContent.setAttribute('id', i);
+      cellContent.textContent = grid[i];
+    }
   }
-})
-  return {grid, gridCells, updateGrid}
-}) ();
+//Why does this work when resetting grid did not?
+//Can you simplify things?
+  const resetGrid = () => {
+    for (let i = 0; i < 9; i++) {
+      let cellContent = gridCells.item(i);
+      cellContent.textContent = "";
+    }
+    for (let i = 0; i < 9; i++) {
+        grid[i] = "";
+    }
+  }
+
+  return { grid, gridCells, updateGrid, resetGrid }
+})();
+
 
 //Factory function to create player
 const player = (name, marker) => {
@@ -29,9 +43,13 @@ let playerTwo = player("Player Two", "O");
 
 // Module to contorl game flow
 const gameController  = (() => { 
+  let statusHeading = document.getElementById('gameStatus');
   let currentPlayer = playerOne;
+
   const switchPlayer = () => {
   currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+  statusHeading.textContent = currentPlayer.name + "(" + currentPlayer.marker + ")'s"  + " turn";
+
 }
 
 const getAllIndexes = (arr, mark) => {
@@ -42,6 +60,7 @@ const checkForWin = (player) => {
   let markerMap = getAllIndexes(gameBoard.grid, player.marker);
   let checker = (arr, target) => target.every(v => arr.includes(v));
 
+  //Try another way to do this? Create a 2D array, and search for matching items
   if (
     checker(markerMap, [0,1,2]) ||
     checker(markerMap, [3,4,5]) ||
@@ -52,8 +71,7 @@ const checkForWin = (player) => {
     checker(markerMap, [0,4,8]) ||
     checker(markerMap, [2,4,6]) 
   ) {
-    let statusHeading = document.getElementById('gameStatus');
-    statusHeading.textContent = player.name + " wins!";
+    statusHeading.textContent = player.name + "(" + player.marker + ")"  + " wins!";
     statusHeading.classList.add('win');  
     return true;                                    
   }
@@ -71,17 +89,34 @@ const runGame = () => {
   function runTurn() {
     currentPlayer.takeTurn(this.id);
     gameBoard.updateGrid();
-    
+    switchPlayer();
+
     if (checkForWin(playerOne) || checkForWin(playerTwo)) {
       for (let i = 0; i < 9; i++) {
         gameBoard.gridCells[i].removeEventListener("click", runTurn);
       }
     }
-    switchPlayer();
+    console.log(gameBoard.grid)
+
   }
+
+  //Experiment with this - why didn't the grid clear when you just reset the grid? Is there another way?
+  resetButton = document.getElementById("reset");
+  resetButton.addEventListener("click", () => {
+    gameBoard.resetGrid();
+    for (let i = 0; i < 9; i++) {
+      gameBoard.gridCells[i].removeEventListener("click", runTurn);
+    }    
+    runGame();
+    console.log("reset " + gameBoard.grid)
+    //After this, there seems to be another version of the grid saved, AND it is not shown on the frontend
+
+  })
 }
 
 return {switchPlayer, runGame, checkForWin, currentPlayer};
 })();
 
 gameController.runGame();
+
+
