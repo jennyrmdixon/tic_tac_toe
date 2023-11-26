@@ -1,4 +1,11 @@
 
+//Reset win while playing game
+//Can you reduce the number of vairalbe shared between functions?
+//Can use a method to return a variable instead of sharing?
+//Problem  - logic is broken, winner dosen't save. Rethink org to see if you can make solving things more clear.
+//Learn more about event listeners 
+//How to reduce returned values from GameBoard?
+
 const gameBoard = (() => {
   let grid = ["", "", "", "", "", "", "", "", ""];
   let gridCells = document.getElementById('gameBoardWrapper').children;
@@ -10,20 +17,10 @@ const gameBoard = (() => {
       cellContent.textContent = grid[i];
     }
   }
-//Why does this work when resetting grid did not?
-//Can you simplify things?
-  const resetGrid = () => {
-    for (let i = 0; i < 9; i++) {
-      let cellContent = gridCells.item(i);
-      cellContent.textContent = "";
-    }
-    for (let i = 0; i < 9; i++) {
-        grid[i] = "";
-    }
-  }
 
-  return { grid, gridCells, updateGrid, resetGrid }
+  return { grid, gridCells, updateGrid}
 })();
+
 
 
 //Factory function to create player
@@ -41,8 +38,14 @@ const player = (name, marker) => {
 let playerOne = player("Player One", "X");
 let playerTwo = player("Player Two", "O");
 
+
+
+
 // Module to contorl game flow
 const gameController  = (() => { 
+
+  //define players in here ?
+
   let statusHeading = document.getElementById('gameStatus');
   let currentPlayer = playerOne;
 
@@ -60,7 +63,7 @@ const checkForWin = (player) => {
   let markerMap = getAllIndexes(gameBoard.grid, player.marker);
   let checker = (arr, target) => target.every(v => arr.includes(v));
 
-  //Try another way to do this? Create a 2D array, and search for matching items
+  /////Try another way to do this? Create a 2D array, and search for matching items
   if (
     checker(markerMap, [0,1,2]) ||
     checker(markerMap, [3,4,5]) ||
@@ -78,16 +81,32 @@ const checkForWin = (player) => {
 
 }
 
+//Scenarios - C. New Game
+// Clear game board (visually, and grid)
+//Clear out previous winnder
+//Set event listners
+
+//Allow player to take marker
+//Switcher player unitil win 
+
+
 const runGame = () => {
-  gameBoard.updateGrid();
+
+  // function prepBoard() {
+  //   gameBoard.updateGrid();
+  //   for (let i = 0; i < 9; i++) {
+  //     gameBoard.gridCells[i].addEventListener("click", runTurn);
+  //   }
+  // }
 
 
-  for (let i = 0; i < 9; i++) {
-    gameBoard.gridCells[i].addEventListener("click", runTurn);
-  }
+   gameBoard.updateGrid();
+    for (let i = 0; i < 9; i++) {
+      gameBoard.gridCells[i].addEventListener("click", runTurn);
+    };
 
-  function runTurn() {
-    currentPlayer.takeTurn(this.id);
+   function runTurn() {
+    currentPlayer.takeTurn(this.id);//add code to take turn in here?
     gameBoard.updateGrid();
     switchPlayer();
 
@@ -96,25 +115,28 @@ const runGame = () => {
         gameBoard.gridCells[i].removeEventListener("click", runTurn);
       }
     }
-    console.log(gameBoard.grid)
+    
+   }
 
-  }
-
-  //Experiment with this - why didn't the grid clear when you just reset the grid? Is there another way?
   resetButton = document.getElementById("reset");
-  resetButton.addEventListener("click", () => {
-    gameBoard.resetGrid();
+  resetButton.addEventListener("click", () => {    
     for (let i = 0; i < 9; i++) {
+      let cellContent = gameBoard.gridCells.item(i);
+      cellContent.textContent = "";
+      gameBoard.grid[i] = "";
       gameBoard.gridCells[i].removeEventListener("click", runTurn);
-    }    
+    }
+    //Handle this a  different way
     runGame();
-    console.log("reset " + gameBoard.grid)
-    //After this, there seems to be another version of the grid saved, AND it is not shown on the frontend
-
+  
   })
 }
 
-return {switchPlayer, runGame, checkForWin, currentPlayer};
+
+//Used to be a part of runTurn function
+
+
+return {runGame};
 })();
 
 gameController.runGame();
