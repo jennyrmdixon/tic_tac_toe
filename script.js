@@ -50,9 +50,10 @@ const gameController  = (() => {
   let currentPlayer = playerOne;
 
   const switchPlayer = () => {
+  console.log("Before switch:" + currentPlayer.name);
   currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
   statusHeading.textContent = currentPlayer.name + "(" + currentPlayer.marker + ")'s"  + " turn";
-
+  console.log("After switch:" + currentPlayer.name);
 }
 
 const getAllIndexes = (arr, mark) => {
@@ -81,34 +82,19 @@ const checkForWin = (player) => {
 
 }
 
-//Scenarios - C. New Game
-// Clear game board (visually, and grid)
-//Clear out previous winnder
-//Set event listners
-
-//Allow player to take marker
-//Switcher player unitil win 
-
-
 const runGame = () => {
-
-  // function prepBoard() {
-  //   gameBoard.updateGrid();
-  //   for (let i = 0; i < 9; i++) {
-  //     gameBoard.gridCells[i].addEventListener("click", runTurn);
-  //   }
-  // }
-
 
    gameBoard.updateGrid();
     for (let i = 0; i < 9; i++) {
       gameBoard.gridCells[i].addEventListener("click", runTurn);
+      //This is hapenning multiple times, trying to move
     };
 
    function runTurn() {
     currentPlayer.takeTurn(this.id);//add code to take turn in here?
     gameBoard.updateGrid();
     switchPlayer();
+
 
     if (checkForWin(playerOne) || checkForWin(playerTwo)) {
       for (let i = 0; i < 9; i++) {
@@ -125,15 +111,16 @@ const runGame = () => {
       cellContent.textContent = "";
       gameBoard.grid[i] = "";
       gameBoard.gridCells[i].removeEventListener("click", runTurn);
+      statusHeading.classList.remove('win');  
+      statusHeading.textContent =   currentPlayer.name + "(" + currentPlayer.marker + "), Click to Start!"
     }
-    //Handle this a  different way
-    runGame();
+    for (let i = 0; i < 9; i++) {
+      gameBoard.gridCells[i].addEventListener("click", runTurn);
+      //This is hapenning multiple times
+    };
   
   })
 }
-
-
-//Used to be a part of runTurn function
 
 
 return {runGame};
