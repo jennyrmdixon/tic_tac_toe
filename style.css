@@ -64,52 +64,101 @@ select {
 
 /*End Reset Code*/
 
+:root {
+    --lightblue: #abc4ff;
+    --offwhite: rgb(239, 239, 239);
+  }
+  
+
 * {
-    font-family: sans-serif;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+body {
+    background-color: var(--lightblue);
+}
+
+.content {
+    max-width: 750px;
+    width:100%;
+    margin: auto;
 }
 
 .header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 10px 0;
+    width: 100%;
+    max-width: 750px;
+    margin-top: 20px;
 }
 
 .statusBar {
     text-align: center;
     display: grid;
-    grid-template-columns: 300px 200px;
+    grid-template-columns: 500px 250px;
+    background-color: var(--offwhite);
+    padding: 5px 0;
+    margin: 5px 0;
 }
 
 h1 {
     margin: auto;
+    color: var(--offwhite);
+    font-size: 3rem;
+    letter-spacing: 0.5rem;
+    text-transform: uppercase;
 }
 
-h2.win {
-    color:green;
-    font-weight: bold;
+h2 {
+    color: #3e465a;
+    letter-spacing: 0.15rem;
     margin: auto;
 
 }
 
-#gameBoardWrapper {
+h2.win {
+    color:blue;
+    font-weight: bold;
+
+}
+
+.header button {
+    background-color: var(--lightblue);
+    color: var(--offwhite);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    border: 3px solid var(--lightblue);
+    margin: 5px;
+}
+
+.header button:hover {
+    background-color: var(--offwhite);
+    color: var(--lightblue);
+}
+
+#gameBoardWrapper { 
     display: grid; 
     gap: 0;
-    max-width: 800px;
     grid-template-columns: 1fr 1fr 1fr;
     margin:auto;
 }
 
 .gridCell {
-    border: 3px solid #abc4ff;
-    min-width: 300px;
-    min-height: 300px;
+    border: 3px solid var(--lightblue);
+    min-width: 250px;
+    min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .gridCell {
-    font-size: 3em;
+    font-size: 5rem;
     font-weight: bold;
+    color: var(--lightblue);
 }
+
+
 
