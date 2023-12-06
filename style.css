@@ -67,11 +67,12 @@ select {
 :root {
     --lightblue: #abc4ff;
     --offwhite: rgb(239, 239, 239);
-  }
-  
+    --darkgrey: #3e465a;
+}
+
 
 * {
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 
 body {
@@ -80,7 +81,7 @@ body {
 
 .content {
     max-width: 750px;
-    width:100%;
+    width: 100%;
     margin: auto;
 }
 
@@ -105,23 +106,21 @@ body {
 
 h1 {
     margin: auto;
-    color: var(--offwhite);
+    color: var(--darkgrey);
     font-size: 3rem;
     letter-spacing: 0.5rem;
     text-transform: uppercase;
 }
 
 h2 {
-    color: #3e465a;
+    color: var(--darkgrey);
     letter-spacing: 0.15rem;
     margin: auto;
-
 }
 
 h2.win {
-    color:blue;
+    color: blue;
     font-weight: bold;
-
 }
 
 .header button {
@@ -138,11 +137,11 @@ h2.win {
     color: var(--lightblue);
 }
 
-#gameBoardWrapper { 
-    display: grid; 
+#gameBoardWrapper {
+    display: grid;
     gap: 0;
     grid-template-columns: 1fr 1fr 1fr;
-    margin:auto;
+    margin: auto;
 }
 
 .gridCell {
@@ -159,6 +158,3 @@ h2.win {
     font-weight: bold;
     color: var(--lightblue);
 }
-
-
-
